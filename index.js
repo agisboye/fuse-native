@@ -475,13 +475,23 @@ class Fuse extends Nanoresource {
 
   _op_read (signal, path, fd, buf, len, offsetLow, offsetHigh) {
     this.ops.read(path, fd, buf, len, getDoubleArg(offsetLow, offsetHigh), (err, bytesRead) => {
-      return signal(err, bytesRead || 0, buf.buffer)
+
+      if (typeof bytesRead !== "undefined" && err >= 0) {
+        err = bytesRead
+      }
+
+      return signal(err, buf.buffer)
     })
   }
 
   _op_write (signal, path, fd, buf, len, offsetLow, offsetHigh) {
     this.ops.write(path, fd, buf, len, getDoubleArg(offsetLow, offsetHigh), (err, bytesWritten) => {
-      return signal(err, bytesWritten || 0, buf.buffer)
+      
+      if (typeof bytesWritten !== "undefined" && err >= 0) {
+        err = bytesWritten
+      }
+
+      return signal(err, buf.buffer)
     })
   }
 

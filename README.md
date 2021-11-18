@@ -36,9 +36,9 @@ const ops = {
   },
   read: function (path, fd, buf, len, pos, cb) {
     var str = 'hello world'.slice(pos, pos + len)
-    if (!str) return cb(0)
+    if (!str) return cb(0, 0)
     buf.write(str)
-    return cb(str.length)
+    return cb(0, str.length)
   }
 }
 
@@ -263,10 +263,10 @@ If no bytes were written (read is complete) return 0 in the callback.
 var data = new Buffer('hello world')
 
 ops.read = function (path, fd, buffer, length, position, cb) {
-  if (position >= data.length) return cb(0) // done
+  if (position >= data.length) return cb(0, 0) // done
   var part = data.slice(position, position + length)
   part.copy(buffer) // write the result of the read to the result buffer
-  cb(part.length) // return the number of bytes read
+  cb(0, part.length) // return the number of bytes read
 }
 ```
 

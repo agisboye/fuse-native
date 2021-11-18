@@ -69,9 +69,9 @@ tape.skip('read timeout does not force unmount', function (t) {
     read: function (path, fd, buf, len, pos, cb) {
       if (path === '/test') {
         var str = 'hello world'.slice(pos, pos + len)
-        if (!str) return process.nextTick(cb, 0)
+        if (!str) return process.nextTick(cb, 0, 0)
         buf.write(str)
-        return process.nextTick(cb, str.length)
+        return process.nextTick(cb, 0, str.length)
       } else if (path === '/timeout') {
         console.log('read is gonna time out')
         // Just let this one timeout
